@@ -12,7 +12,9 @@ cd $WORKSPACE
 hh=10.2p1
 curl -s https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$hh.tar.gz | tar x --gzip
 cd openssh-$hh
-LDFLAGS="-static -no-pie -s" ./configure --prefix=/usr/local/opensshmm --sysconfdir=/usr/local/opensshmm/etc/ssh --without-pam --with-privsep-path=/usr/local/opensshmm/lib/sshd/ --with-pid-dir=/usr/local/opensshmm/run --with-mantype=man
+./configure --prefix=/usr/local/opensshmm --sysconfdir=/usr/local/opensshmm/etc/ssh --without-pam --with-privsep-path=/usr/local/opensshmm/lib/sshd/ --with-pid-dir=/usr/local/opensshmm/run --with-mantype=man --with-libedit --with-ldns
+sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
+sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
 make
 make install
 
