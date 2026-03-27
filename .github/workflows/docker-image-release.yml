@@ -41,7 +41,6 @@ jobs:
         overwrite: true
         body: "Fully static openssh binary using alpine linux docker containers."
 
-
     - name: Upload binaries to release - liboqs-openssh
       uses: svenstaro/upload-release-action@v2
       with:
@@ -50,3 +49,12 @@ jobs:
         tag: refs/tags/continuous
         overwrite: true
         body: "Fully static openssh binary using alpine linux docker containers."          
+
+    - name: Upload binaries to release - HPN openssh
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ./hpnsshmm.tar.xz
+        asset_name: hpnsshmm-${{ runner.os }}-${{ runner.arch }}.tar.xz
+        tag: refs/tags/continuous
+        overwrite: true
+        body: "Fully static openssh binary using alpine linux docker containers."            
