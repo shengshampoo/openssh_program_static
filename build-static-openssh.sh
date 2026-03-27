@@ -41,8 +41,23 @@ sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
 make
 make install
 
+# HPN_SSH openssh
+cd $WORKSPACE
+git clone https://github.com/rapier1/hpn-ssh
+cd hpn-ssh
+autoreconf -f -i
+./configure --prefix=/usr/local/hpnsshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
+sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
+make
+addgroup hpnsshd
+adduser --disabled-password hpnsshd -G hpnsshd
+make install
+
+
 cd /usr/local
 tar vcJf ./opensshmm.tar.xz opensshmm
 tar vcJf ./liboqs_opensshmm.tar.xz liboqs_opensshmm
+tar vcJf ./hpnsshmm.tar.xz hpnsshmm
 
-mv ./[lo]*sshmm.tar.xz /work/artifact/
+mv ./[hlo]*sshmm.tar.xz /work/artifact/
