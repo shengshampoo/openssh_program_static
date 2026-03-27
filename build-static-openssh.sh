@@ -12,7 +12,30 @@ cd $WORKSPACE
 hh=$(curl -s https://www.openssh.org/releasenotes.html | grep -Po '\K[0-9.]{4}p1+' | head -n 1)
 curl -s https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$hh.tar.gz | tar x --gzip
 cd openssh-$hh
-./configure --prefix=/usr/local/opensshmm --sysconfdir=/usr/local/opensshmm/etc/ssh --without-pam --with-privsep-path=/usr/local/opensshmm/lib/sshd/ --with-pid-dir=/usr/local/opensshmm/run --with-mantype=man --with-libedit --with-ldns
+./configure --prefix=/usr/local/opensshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
+sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
+make
+make install
+
+# liboqs
+cd $WORKSPACE
+git clone https://github.com/open-quantum-safe/liboqs
+cd liboqs
+mkdir build
+cd build
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DOQS_BUILD_ONLY_LIB=ON -DOQS_ENABLE_KEM_HQC=ON ..
+ninja
+ninja install
+
+# liboqs_openssh
+cd $WORKSPACE
+git clone -b OQS-v10 https://github.com/open-quantum-safe/openssh.git
+cd openssh
+autoreconf -i
+./configure --prefix=/usr/local/liboqs_opensshmm --sysconfdir=/etc/ssh/oqsssh \
+ --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run/liboqs \
+ --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
 make
@@ -20,5 +43,6 @@ make install
 
 cd /usr/local
 tar vcJf ./opensshmm.tar.xz opensshmm
+tar vcJf ./liboqs_opensshmm.tar.xz liboqs_opensshmm
 
-mv ./opensshmm.tar.xz /work/artifact/
+mv ./[lo]*sshmm.tar.xz /work/artifact/
