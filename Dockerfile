@@ -10,7 +10,7 @@ RUN apk upgrade
 RUN apk add --no-cache \
   gcc make linux-headers musl-dev zlib-dev zlib-static \
   python3-dev curl openssl-dev openssl-libs-static bash xz grep \
-  cmake git ninja libtool autoconf automake \
+  cmake git ninja libtool autoconf automake patch \
   libedit-dev libedit-static libedit \
   ncurses-static ncurses-dev readline-static readline-dev ldns-dev
 
