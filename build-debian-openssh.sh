@@ -44,3 +44,10 @@ autoreconf -f -i
 make
 useradd --system --shell /usr/sbin/nologin --comment="Privilege separated HPNSSH User" --home=/run/hpnsshd hpnsshd
 make install
+
+
+cd /usr/local
+tar vcJf ./liboqs_openssh.tar.xz liboqs liboqs_openssh
+tar vcJf ./hpnssh.tar.xz hpnssh
+
+mv ./[hl]*ssh.tar.xz /work/artifact/
