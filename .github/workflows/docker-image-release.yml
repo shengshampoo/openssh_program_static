@@ -33,16 +33,6 @@ jobs:
         docker run --cidfile=builder.cid builder true
         docker cp "$(cat builder.cid):work/artifact/." .
 
-    - name: Upload binaries to release - openssh
-      uses: svenstaro/upload-release-action@v2
-      with:
-        file: ./opensshmm.tar.xz
-        asset_name: opensshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
-        tag: refs/tags/continuous
-        overwrite: true
-        body: "Fully static openssh binary using alpine linux docker containers, \
-              and shared openssh binary using debian linux docker containers."    
-              
     - name: Upload binaries to release - liboqs-openssh
       uses: svenstaro/upload-release-action@v2
       with:
