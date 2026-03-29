@@ -41,7 +41,7 @@ jobs:
         tag: refs/tags/continuous
         overwrite: true
         body: "Fully static openssh binary using alpine linux docker containers, \
-              and shared openssh binary using debian linux docker containers."          
+              and shared openssh binary using debian linux docker containers."
 
     - name: Upload binaries to release - HPN openssh
       uses: svenstaro/upload-release-action@v2
@@ -51,4 +51,4 @@ jobs:
         tag: refs/tags/continuous
         overwrite: true
         body: "Fully static openssh binary using alpine linux docker containers, \
-              and shared openssh binary using debian linux docker containers."    
+              and shared openssh binary using debian linux docker containers."
