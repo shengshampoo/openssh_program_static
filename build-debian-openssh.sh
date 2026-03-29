@@ -47,7 +47,7 @@ make install
 
 
 cd /usr/local
-tar vcJf ./liboqs_openssh.tar.xz liboqs liboqs_openssh
-tar vcJf ./hpnssh.tar.xz hpnssh
+tar vcJf ./liboqs_opensshmm.tar.xz liboqs liboqs_openssh
+tar vcJf ./hpnsshmm.tar.xz hpnssh
 
-mv ./[hl]*ssh.tar.xz /work/artifact/
+mv ./[hl]*sshmm.tar.xz /work/artifact/
