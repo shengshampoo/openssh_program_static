@@ -2,9 +2,10 @@ FROM debian:forky
 
 RUN sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
 
-RUN apt update && apt upgrade -y
-RUN apt install -y git curl cmake ninja-build pkg-config ca-certificates
-RUN apt build-dep -y openssh
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN apt update && apt upgrade -y && \
+    apt install -y git curl cmake ninja-build pkg-config ca-certificates && \
+    apt build-dep -y openssh
 
 ENV XZ_OPT=-e9
 COPY build-debian-openssh.sh build-debian-openssh.sh
