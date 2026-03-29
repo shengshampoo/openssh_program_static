@@ -1,0 +1,12 @@
+FROM debian:forky
+
+RUN sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
+
+RUN apt update 
+RUN apt install -y git curl cmake ninja-build pkg-config
+RUN apt build-dep -y openssh
+
+ENV XZ_OPT=-e9
+COPY build-debian-openssh.sh build-debian-openssh.sh
+RUN chmod +x ./build-debian-openssh.sh
+RUN bash ./build-debian-openssh.sh  
