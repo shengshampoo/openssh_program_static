@@ -31,5 +31,5 @@ jobs:
     - name: Upload static program
       uses: actions/upload-artifact@v4
       with:
-        name: openssh-${{ matrix.os }}
+        name: openssh-${{ matrix.dockeros }}-${{ matrix.os }}
         path: ./*.tar.xz
