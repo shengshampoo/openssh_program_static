@@ -1,0 +1,64 @@
+name: Docker Image CI - X86_64/AARCH64 for Alpine Linux to continuous tags2
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'continuous'
+  pull_request:
+    branches: [ "main" ]
+  # run it manually
+  workflow_dispatch:    
+  schedule:
+    - cron: "20 6 * * *"  
+    - cron: "55 18 * * *"     
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+        dockeros: [alpine]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build -f Dockerfile-${{ matrix.dockeros }} --tag builder .
+
+    - name: build static program with alpine linux docker 
+      run: |
+        docker run --cidfile=builder.cid builder true
+        docker cp "$(cat builder.cid):work/artifact/." .
+
+    - name: Upload binaries to release - openssh
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ./opensshmm.tar.xz
+        asset_name: opensshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
+        tag: refs/tags/continuous
+        overwrite: true
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."
+
+    - name: Upload binaries to release - liboqs-openssh
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ./liboqs_opensshmm.tar.xz
+        asset_name: liboqs_opensshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
+        tag: refs/tags/continuous
+        overwrite: true
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."
+
+    - name: Upload binaries to release - HPN openssh
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ./hpnsshmm.tar.xz
+        asset_name: hpnsshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
+        tag: refs/tags/continuous
+        overwrite: true
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."
