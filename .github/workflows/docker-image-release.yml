@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm]
-        dockeros: [alpine]
+        dockeros: [alpine, debian]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -40,8 +40,9 @@ jobs:
         asset_name: opensshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
         tag: refs/tags/continuous
         overwrite: true
-        body: "Fully static openssh binary using alpine linux docker containers."
-
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."    
+              
     - name: Upload binaries to release - liboqs-openssh
       uses: svenstaro/upload-release-action@v2
       with:
@@ -49,7 +50,8 @@ jobs:
         asset_name: liboqs_opensshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
         tag: refs/tags/continuous
         overwrite: true
-        body: "Fully static openssh binary using alpine linux docker containers."          
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."          
 
     - name: Upload binaries to release - HPN openssh
       uses: svenstaro/upload-release-action@v2
@@ -58,4 +60,5 @@ jobs:
         asset_name: hpnsshmm-${{ matrix.dockeros }}-${{ runner.os }}-${{ runner.arch }}.tar.xz
         tag: refs/tags/continuous
         overwrite: true
-        body: "Fully static openssh binary using alpine linux docker containers."            
+        body: "Fully static openssh binary using alpine linux docker containers, \
+              and shared openssh binary using debian linux docker containers."    
