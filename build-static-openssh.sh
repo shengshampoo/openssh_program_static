@@ -48,7 +48,7 @@ make install
 
 # HPN_SSH openssh
 cd $WORKSPACE
-git clone https://github.com/rapier1/hpn-ssh
+git clone -b dev_minor https://github.com/rapier1/hpn-ssh
 cd hpn-ssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | sed -e "s@ssh.1@hpnssh.1@g" | sed -e "s@ssh_config.5@hpnssh_config.5@g" | patch -p1
