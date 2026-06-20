@@ -18,8 +18,7 @@ ninja install
 
 # liboqs_openssh
 cd $WORKSPACE
-#git clone -b OQS-v10 https://github.com/open-quantum-safe/openssh.git
-git clone -b openssh-10.3p1-uplift https://github.com/andrewyounkers/openssh
+git clone -b OQS-v10 https://github.com/open-quantum-safe/openssh.git
 cd openssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
