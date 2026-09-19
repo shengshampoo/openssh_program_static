@@ -18,7 +18,7 @@ autoreconf -i
 ./configure --prefix=/usr/local/opensshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-Wno-cpp" CXXFLAGS="-Wno-cpp"
 make install
 
 # liboqs
@@ -43,7 +43,7 @@ autoreconf -i
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-Wno-cpp" CXXFLAGS="-Wno-cpp"
 make install
 
 # HPN_SSH openssh
@@ -56,7 +56,7 @@ autoreconf -f -i
 ./configure --prefix=/usr/local/hpnsshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-Wno-cpp" CXXFLAGS="-Wno-cpp"
 addgroup hpnsshd
 adduser --disabled-password hpnsshd -G hpnsshd
 make install
