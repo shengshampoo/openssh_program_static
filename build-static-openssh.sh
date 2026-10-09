@@ -7,6 +7,16 @@ WORKSPACE=/tmp/workspace
 mkdir -p $WORKSPACE
 mkdir -p /work/artifact
 
+# openssl
+opsslver=4.0.3
+cd $WORKSPACE
+curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
+cd openssl-$opsslver
+./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/usr no-shared no-async enable-ktls enable-ech \
+enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
+make && make install
+
+
 # openssh
 cd $WORKSPACE
 hh=$(curl -s https://www.openssh.org/releasenotes.html | grep -Po '\K[0-9.]{4}p1+' | head -n 1)
