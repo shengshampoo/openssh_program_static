@@ -27,7 +27,7 @@ autoreconf -i
 ./configure --prefix=/usr/local/opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
+make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
 make install
 
 # liboqs
@@ -53,7 +53,7 @@ autoreconf -i
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
+make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
 make install
 
 # HPN_SSH openssh
@@ -66,7 +66,7 @@ autoreconf -f -i
 ./configure --prefix=/usr/local/hpnsshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib" 
+make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
 addgroup hpnsshd
 adduser --disabled-password hpnsshd -G hpnsshd
 make install
