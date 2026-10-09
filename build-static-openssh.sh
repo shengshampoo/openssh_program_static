@@ -24,7 +24,7 @@ cd openssh-$hh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
-./configure --prefix=/usr/local/opensshmm --with-ssl-dir=/opt/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+./configure --prefix=/usr/local/opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
 make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
@@ -48,7 +48,7 @@ cd openssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
-./configure --prefix=/usr/local/liboqs_opensshmm --with-ssl-dir=/opt/openssl --sysconfdir=/etc/ssh/oqsssh \
+./configure --prefix=/usr/local/liboqs_opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh/oqsssh \
  --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run/liboqs \
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
@@ -63,7 +63,7 @@ cd hpn-ssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | sed -e "s@ssh.1@hpnssh.1@g" | sed -e "s@ssh_config.5@hpnssh_config.5@g" | patch -p1
 autoreconf -f -i
-./configure --prefix=/usr/local/hpnsshmm --with-ssl-dir=/opt/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+./configure --prefix=/usr/local/hpnsshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
 make CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp" CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp" LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib" 
