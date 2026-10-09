@@ -12,6 +12,15 @@ opsslver=4.0.3
 cd $WORKSPACE
 curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
 cd openssl-$opsslver
+./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared no-async enable-ktls enable-ech \
+enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
+make && make install
+
+opsslver=4.0.3
+cd $WORKSPACE
+rm -r openssl-$opsslver
+curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
+cd openssl-$opsslver
 ./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared no-async enable-ktls enable-ech \
 enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
 make && make install
