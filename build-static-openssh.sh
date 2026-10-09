@@ -8,7 +8,7 @@ mkdir -p $WORKSPACE
 mkdir -p /work/artifact
 
 # openssl
-opsslver=4.0.3
+opsslver=3.5.9
 cd $WORKSPACE
 curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
 cd openssl-$opsslver
