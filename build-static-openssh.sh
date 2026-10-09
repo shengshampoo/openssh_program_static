@@ -26,7 +26,7 @@ curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/u
 autoreconf -i
 export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
 export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
+export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
 ./configure --prefix=/usr/local/opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
@@ -39,7 +39,10 @@ git clone https://github.com/open-quantum-safe/liboqs
 cd liboqs
 mkdir build
 cd build
-cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DOQS_BUILD_ONLY_LIB=ON -DOQS_ENABLE_KEM_HQC=ON ..
+export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
+export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
+export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DOQS_BUILD_ONLY_LIB=ON -DOQS_ENABLE_KEM_HQC=ON -DOPENSSL_ROOT_DIR=/usr/openssl ..
 ninja
 ninja install
 
@@ -53,7 +56,7 @@ curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/u
 autoreconf -i
 export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
 export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
+export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
 ./configure --prefix=/usr/local/liboqs_opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh/oqsssh \
  --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run/liboqs \
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
@@ -71,7 +74,7 @@ curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/u
 autoreconf -f -i
 export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
 export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib64 -Wl,-rpath,/usr/openssl/lib64"
+export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
 ./configure --prefix=/usr/local/hpnsshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
