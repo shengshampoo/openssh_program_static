@@ -12,7 +12,7 @@ opsslver=4.0.3
 cd $WORKSPACE
 curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
 cd openssl-$opsslver
-./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr/openssl --openssldir=/usr/openssl --libdir=lib no-shared no-async enable-ktls enable-ech \
+./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared no-async enable-ktls enable-ech \
 enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
 make && make install
 
@@ -24,13 +24,10 @@ cd openssh-$hh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
-export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
-export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
-./configure --prefix=/usr/local/opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+./configure --prefix=/usr/local/opensshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-I. -I./includes -Wno-cpp" CXXFLAGS="-I. -I./includes -Wno-cpp" 
 make install
 
 # liboqs
@@ -39,10 +36,7 @@ git clone https://github.com/open-quantum-safe/liboqs
 cd liboqs
 mkdir build
 cd build
-export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
-export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
-cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DOQS_BUILD_ONLY_LIB=ON -DOQS_ENABLE_KEM_HQC=ON -DOPENSSL_ROOT_DIR=/usr/openssl ..
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DOQS_BUILD_ONLY_LIB=ON -DOQS_ENABLE_KEM_HQC=ON ..
 ninja
 ninja install
 
@@ -54,15 +48,12 @@ cd openssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
-export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
-export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
-./configure --prefix=/usr/local/liboqs_opensshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh/oqsssh \
+./configure --prefix=/usr/local/liboqs_opensshmm --sysconfdir=/etc/ssh/oqsssh \
  --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run/liboqs \
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-I. -I./includes -Wno-cpp" CXXFLAGS="-I. -I./includes -Wno-cpp" 
 make install
 
 # HPN_SSH openssh
@@ -72,13 +63,10 @@ cd hpn-ssh
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
 curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | sed -e "s@ssh.1@hpnssh.1@g" | sed -e "s@ssh_config.5@hpnssh_config.5@g" | patch -p1
 autoreconf -f -i
-export CFLAGS="-I. -I./includes -I/usr/openssl/include -Wno-cpp"
-export CXXFLAGS="-I. -I/usr/openssl/include -I./includes -Wno-cpp"
-export LDFLAGS="-L/usr/openssl/lib -Wl,-rpath,/usr/openssl/lib"
-./configure --prefix=/usr/local/hpnsshmm --with-ssl-dir=/usr/openssl --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
+./configure --prefix=/usr/local/hpnsshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make
+make CFLAGS="-I. -I./includes -Wno-cpp" CXXFLAGS="-I. -I./includes -Wno-cpp" 
 addgroup hpnsshd
 adduser --disabled-password hpnsshd -G hpnsshd
 make install
