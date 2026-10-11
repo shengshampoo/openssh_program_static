@@ -7,31 +7,14 @@ WORKSPACE=/tmp/workspace
 mkdir -p $WORKSPACE
 mkdir -p /work/artifact
 
-# openssl
-opsslver=4.0.3
-cd $WORKSPACE
-curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
-cd openssl-$opsslver
-./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared no-async enable-ktls enable-ech \
-enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
-make && make install
-
-opsslver=4.0.3
-cd $WORKSPACE
-rm -r openssl-$opsslver
-curl -sL https://github.com/openssl/openssl/releases/download/openssl-$opsslver/openssl-$opsslver.tar.gz | tar x --gzip
-cd openssl-$opsslver
-./Configure enable-ktls enable-ec_nistp_64_gcc_128 zlib --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared no-async enable-ktls enable-ech \
-enable-ec_nistp_64_gcc_128 enable-tfo enable-quic zlib
-make && make install
 
 # openssh
 cd $WORKSPACE
 hh=$(curl -s https://www.openssh.org/releasenotes.html | grep -Po '\K[0-9.]{4}p1+' | head -n 1)
 curl -s https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$hh.tar.gz | tar x --gzip
 cd openssh-$hh
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
 ./configure --prefix=/usr/local/opensshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
@@ -54,8 +37,8 @@ cd $WORKSPACE
 # git clone -b OQS-v10 https://github.com/open-quantum-safe/openssh.git
 git clone -b feature/openssh_10_4_uplift https://github.com/andrewyounkers/openssh.git
 cd openssh
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | patch -p1
 autoreconf -i
 ./configure --prefix=/usr/local/liboqs_opensshmm --sysconfdir=/etc/ssh/oqsssh \
  --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run/liboqs \
@@ -69,8 +52,8 @@ make install
 cd $WORKSPACE
 git clone -b dev_minor https://github.com/rapier1/hpn-ssh
 cd hpn-ssh
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
-curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | sed -e "s@ssh.1@hpnssh.1@g" | sed -e "s@ssh_config.5@hpnssh_config.5@g" | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/systemd-socket-activation.patch | patch -p1
+#curl -sL https://salsa.debian.org/ssh-team/openssh/-/raw/master/debian/patches/user-group-modes.patch | sed -e "s@ssh.1@hpnssh.1@g" | sed -e "s@ssh_config.5@hpnssh_config.5@g" | patch -p1
 autoreconf -f -i
 ./configure --prefix=/usr/local/hpnsshmm --sysconfdir=/etc/ssh --without-pam --with-privsep-path=/var/lib/sshd --with-pid-dir=/var/run --with-mantype=man --with-libedit --with-ldns
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
