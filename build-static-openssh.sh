@@ -24,7 +24,7 @@ make install
 
 # liboqs
 cd $WORKSPACE
-git clone -b 0.16.0 https://github.com/open-quantum-safe/liboqs
+git clone https://github.com/open-quantum-safe/liboqs
 cd liboqs
 mkdir build
 cd build
