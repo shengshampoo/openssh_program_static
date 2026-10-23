@@ -45,7 +45,7 @@ autoreconf -i
  --with-mantype=man --with-libedit --with-ldns --with-liboqs-dir=/usr
 sed -i 's@LDFLAGS=@LDFLAGS=-static -no-pie -s @g'  ./Makefile
 sed -i 's@LIBEDIT=-ledit@LIBEDIT=-ledit -lncurses -ltinfo@g'  ./Makefile
-make CFLAGS="-I. -I./includes -Wno-cpp" CXXFLAGS="-I. -I./includes -Wno-cpp" 
+make CFLAGS="-Wno-error=implicit-function-declaration -I. -I./includes -Wno-cpp" CXXFLAGS="-Wno-error=implicit-function-declaration -I. -I./includes -Wno-cpp" 
 make install
 
 # HPN_SSH openssh
