@@ -12,7 +12,7 @@ git clone https://github.com/open-quantum-safe/liboqs
 cd liboqs
 mkdir build
 cd build
-cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr/local/liboqs -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_KEM_HQC=ON ..
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr/local/liboqs -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_KEM_HQC=ON -DOQS_ENABLE_KEM_NTRU_PRIME=OFF ..
 ninja
 ninja install
 
